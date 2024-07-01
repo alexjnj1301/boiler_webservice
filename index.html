@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>non</title>
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="./assets/IMG/logo4.png">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+        <link href="pagedecon.css" rel="stylesheet">
+        <script src="scriptdepagedecon.js"></script>
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
+        <script>
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('a42ad75ad4177081818b', {
+                cluster: 'eu'
+            });
+
+            var channel = pusher.subscribe('my-channel');
+            channel.bind('App\\Events\\MyEvent', function(data) {
+                console.log("je fais caca:", data);
+                var pixel = document.createElement("div");
+                pixel.style.position = 'absolute';
+                pixel.style.top = data.pixel.y + 'px';
+                pixel.style.left = data.pixel.x + 'px';
+                pixel.style.zIndex = '9999';
+                pixel.style.width = '10px';
+                pixel.style.height = '10px';
+                pixel.style.backgroundColor = data.pixel.color;
+
+                var currentDivv = document.getElementById("merde");
+                console.log(pixel);
+                document.body.insertBefore(pixel, currentDivv);
+            });
+
+        </script>
+
+    </head>
+    <body class="mat-typography">
+        <div id="merde" onclick="methode()">fin des petits pixels</div>
+
+        <span>Changer la couleur des petits carrés: </span><input id="colorpicker" type="color" value="#0000000" onchange="changecolor()">
+    </body>
+</html>
